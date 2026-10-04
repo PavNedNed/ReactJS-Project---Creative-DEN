@@ -18,17 +18,17 @@ function Register() {
 
             <div className="form-grid">
               <div className="field">
-                <label for="email">Email</label>
+                <label htmlFor="email">Email</label>
                 <input id="email" name="email" type="email" placeholder="you@studio.com" required />
               </div>
 
               <div className="field">
-                <label for="password">Password</label>
+                <label htmlFor="password">Password</label>
                 <input id="password" name="password" type="password" placeholder="At least 6 characters" required />
               </div>
 
               <div className="field">
-                <label for="repass">Repeat password</label>
+                <label htmlFor="repass">Repeat password</label>
                 <input id="repass" name="repass" type="password" placeholder="Repeat password" required />
               </div>
             </div>
