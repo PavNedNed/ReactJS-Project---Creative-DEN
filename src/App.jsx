@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router"
 import './App.css'
 import Header from './components/header/Header'
+import Footer from "./components/footer/Footer"
 
 function App() {
   return (
@@ -16,6 +17,8 @@ function App() {
         <Route path="/create" element={<h1>Create Page</h1>} />
         <Route path="/logout" element={<h1>Logout Page</h1>} />
       </Routes>
+
+      <Footer />
     </>
   )
 }
