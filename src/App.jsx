@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router"
+import Edit from "./components/edit/Edit"
 import Catalog from "./components/catalog/Catalog"
 import Login from "./components/login/Login"
 import './App.css'
@@ -22,7 +23,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/create" element={<Create />} />
-        <Route path="/edit" element={<h1>Edit Page</h1>} />
+        <Route path="/edit" element={<Edit />} />
         <Route path="/details" element={<Details />} />
         <Route path="/logout" element={<Logout />} />
       </Routes>
