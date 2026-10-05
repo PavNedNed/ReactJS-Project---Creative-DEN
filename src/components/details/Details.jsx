@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 function Details() {
     return (
         <main>
@@ -29,7 +31,7 @@ function Details() {
                             <button className="btn btn-like" id="likeBtn" type="button" aria-pressed="false">
                                 Like this pack
                             </button>
-                            <a className="btn btn-ghost" href="edit.html">Edit</a>
+                            <Link className="btn btn-ghost" to="/edit">Edit</Link>
                             <button className="btn btn-danger" type="button">Delete</button>
                         </div>
                         <p className="field-hint" style={{ marginTop: "1rem" }}>
