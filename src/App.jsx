@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router"
+import Catalog from "./components/catalog/Catalog"
 import Login from "./components/login/Login"
 import './App.css'
 import Header from './components/header/Header'
@@ -14,7 +15,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/catalog" element={<h1>Catalog Page</h1>} />
+        <Route path="/catalog" element={<Catalog />} />
         <Route path="/about" element={<h1>About Page</h1>} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
