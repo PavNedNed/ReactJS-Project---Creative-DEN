@@ -1,11 +1,11 @@
 import { Link } from "react-router";
-import AuthHeaderSection from "../shared/AuthHeaderSection";
+import ItemHeader from "../shared/ItemHeader";
 
 function Login() {
     return (
         <main>
 
-        <AuthHeaderSection
+        <ItemHeader
             title="Welcome back"
             type="Login"
             paragraph="Access your account to list graphics, edit listings, and like other creators."

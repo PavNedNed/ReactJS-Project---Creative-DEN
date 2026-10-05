@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import AuthHeaderSection from "../shared/AuthHeaderSection";
+import AuthHeaderSection from "../shared/ItemHeader";
 
 function Logout() {
     return (

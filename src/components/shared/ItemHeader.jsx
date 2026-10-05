@@ -1,4 +1,4 @@
-function AuthHeaderSection({
+function ItemHeader({
     title,
     type,
     paragraph
@@ -14,5 +14,5 @@ function AuthHeaderSection({
     );
 }
 
-export default AuthHeaderSection;
+export default ItemHeader;
 

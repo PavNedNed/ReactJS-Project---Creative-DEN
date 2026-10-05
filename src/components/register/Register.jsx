@@ -1,11 +1,11 @@
 import { Link } from "react-router";
-import AuthHeaderSection from "../shared/AuthHeaderSection";
+import ItemHeader from "../shared/ItemHeader";
 
 function Register() {
     return (
         <main>
 
-        <AuthHeaderSection 
+        <ItemHeader
             title="Join the yard"
             type="Register"
             paragraph="Create an account to sell graphic packs and like other artists’ work."
