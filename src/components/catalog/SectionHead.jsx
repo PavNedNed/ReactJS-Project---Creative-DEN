@@ -1,10 +1,14 @@
-function SectionHead() {
+function SectionHead({
+  kicker,
+  title,
+  paragraph,
+}) {
     return (
         <section className="page-hero">
           <div className="container">
-            <span className="section-kicker">Full market</span>
-            <h1>Catalog</h1>
-            <p>Every live listing on Creative DEN — vectors, rasters, logos, web kits, and caricatures.</p>
+            <span className="section-kicker">{kicker}</span>
+            <h1>{title}</h1>
+            <p>{paragraph}</p>
           </div>
         </section>
     );

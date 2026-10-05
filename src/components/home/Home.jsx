@@ -9,7 +9,7 @@ function Home() {
 
         <section className="section">
           <div className="container">
-            <SectionHead />
+            <SectionHead />            
 
             <div className="asset-grid">
 
