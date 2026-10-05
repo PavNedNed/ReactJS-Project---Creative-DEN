@@ -10,6 +10,7 @@ import Register from "./components/register/Register"
 import Logout from "./components/logout/Logout"
 import Create from "./components/create/Create"
 import Details from "./components/details/Details"
+import About from "./components/about/About"
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/catalog" element={<Catalog />} />
-        <Route path="/about" element={<h1>About Page</h1>} />
+        <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/create" element={<Create />} />

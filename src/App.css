@@ -655,8 +655,7 @@ main {
   box-shadow: var(--shadow);
   min-height: 320px;
   background:
-    linear-gradient(145deg, rgba(11, 46, 43, 0.55), rgba(232, 155, 26, 0.35)),
-    url("https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1200&q=80")
+    url("/about.jpg")
       center / cover no-repeat;
   animation: drift 12s ease-in-out infinite alternate;
 }
