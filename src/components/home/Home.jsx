@@ -15,9 +15,7 @@ function Home() {
         console.error(error);
     }
 
-    console.log(data);
-
-
+    // console.log(data);
 
     return (
         <main>
