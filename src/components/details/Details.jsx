@@ -1,11 +1,12 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import useFetch from "../../hooks/useFetch";
 import { useParams } from "react-router";
 
 function Details() {
+    const navigate = useNavigate();
     const graphicId = useParams().graphicId;
 
-    const { data, loading, error } = useFetch(
+    const { data, loading, error, request } = useFetch(
         "graphics",
         `id=eq.${graphicId}`
     );
@@ -14,7 +15,29 @@ function Details() {
         console.error(error);
     }
 
-    // console.log(data);
+    const deleteGameClickHandler = async (e) => {
+        e.preventDefault();
+
+        const confirmed = confirm(`Are you sure you want to delete ${data.length > 0 ? data[0].title : "this"} graphic?`);
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            const result = await request(
+                "DELETE",
+                null,
+                `id=eq.${graphicId}`
+            );
+
+            if (result) {
+                navigate("/catalog");
+            }
+        } catch (err) {
+            alert(err);
+        }
+    }
 
 
     return (
@@ -32,7 +55,7 @@ function Details() {
                         <span className="badge">{data.length > 0 ? data[0].category : "Loading..."}</span>
                         <h1>{data.length > 0 ? data[0].title : "Loading..."}</h1>
                         <p>
-                            {data.length > 0 ? data[0].description : "Loading..."}  
+                            {data.length > 0 ? data[0].description : "Loading..."}
                         </p>
 
                         <div className="details-stats">
@@ -47,7 +70,7 @@ function Details() {
                                 Like this pack
                             </button>
                             <Link className="btn btn-ghost" to={`/graphics/${graphicId}/edit`}>Edit</Link>
-                            <button className="btn btn-danger" type="button">Delete</button>
+                            <Link className="btn btn-danger" type="button" onClick={deleteGameClickHandler}>Delete</Link>
                         </div>
                     </div>
                 </div>
