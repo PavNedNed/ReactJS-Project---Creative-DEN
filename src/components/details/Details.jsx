@@ -29,7 +29,7 @@ function Details() {
                     </div>
 
                     <div className="details-panel">
-                        <span className="badge">vector</span>
+                        <span className="badge">{data.length > 0 ? data[0].category : "Loading..."}</span>
                         <h1>{data.length > 0 ? data[0].title : "Loading..."}</h1>
                         <p>
                             {data.length > 0 ? data[0].description : "Loading..."}  
@@ -46,7 +46,7 @@ function Details() {
                             <button className="btn btn-like" id="likeBtn" type="button" aria-pressed="false">
                                 Like this pack
                             </button>
-                            <Link className="btn btn-ghost" to="/edit">Edit</Link>
+                            <Link className="btn btn-ghost" to={`/graphics/${graphicId}/edit`}>Edit</Link>
                             <button className="btn btn-danger" type="button">Delete</button>
                         </div>
                     </div>
