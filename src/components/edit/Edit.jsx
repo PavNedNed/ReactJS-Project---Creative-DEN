@@ -33,7 +33,7 @@ function Edit() {
                 imageUrl: data[0].imageUrl ?? "",
                 category: data[0].category ?? "",
                 description: data[0].description ?? "",                
-                price: data[0].price ?? "",                
+                price: data[0].price ?? "",             
             });
         }
     }, [data]);
@@ -46,19 +46,21 @@ function Edit() {
     }
 
     async function submitHandler(event) {
+        // console.log("Submitting values:", values);
+
         event.preventDefault();
 
-        // const result = await request(
-        //     "PUT",
-        //     values,
-        //     `id=eq.${graphicId}`
-        // );
+        const result = await request(
+            "PATCH",
+            values,
+            `id=eq.${graphicId}`
+        );
 
-        console.log("OPA!")
+        // console.log("OPA!", result);
 
-        // if (result) {
+        if (result) {
             navigate(`/graphics/${graphicId}`);
-        // }
+        }
     }
 
 
@@ -122,7 +124,7 @@ function Edit() {
 
                     <div className="form-actions">
                         <button className="btn btn-primary" type="submit">Save changes</button>
-                        <Link className="btn btn-ghost" to="/details">Cancel</Link>
+                        <Link className="btn btn-ghost" to={`/graphics/${graphicId}`}>Cancel</Link>
                     </div>
                 </form>
             </section>
