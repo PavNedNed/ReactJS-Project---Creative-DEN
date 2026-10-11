@@ -23,9 +23,11 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/create" element={<Create />} />
-        <Route path="/edit" element={<Edit />} />
-        <Route path="/details" element={<Details />} />
+        
+        <Route path="/graphics/:graphicId" element={<Details />} />
+        <Route path="/graphics/create" element={<Create />} />
+        <Route path="/graphics/:graphicId/edit" element={<Edit />} />
+
         <Route path="/logout" element={<Logout />} />
       </Routes>
 

@@ -28,7 +28,7 @@ function Catalog() {
                 <div className="container">
                     <div className="catalog-toolbar">
                         <p className="muted">Showing all assets</p>
-                        <Link className="btn btn-primary" to="/create">List a pack</Link>
+                        <Link className="btn btn-primary" to="/graphics/create">Create listing</Link>
                     </div>
 
                     <div className="asset-grid">
