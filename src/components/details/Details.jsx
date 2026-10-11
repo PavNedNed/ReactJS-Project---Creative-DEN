@@ -1,29 +1,44 @@
 import { Link } from "react-router";
+import useFetch from "../../hooks/useFetch";
+import { useParams } from "react-router";
 
 function Details() {
+    const graphicId = useParams().graphicId;
+
+    const { data, loading, error } = useFetch(
+        "graphics",
+        `id=eq.${graphicId}`
+    );
+
+    if (error) {
+        console.error(error);
+    }
+
+    // console.log(data);
+
+
     return (
         <main>
             <section className="section">
                 <div className="container details-layout">
                     <div className="details-visual">
                         <img
-                            src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1400&q=80"
-                            alt="Orbit Gradient System preview"
+                            src={data.length > 0 ? data[0].imageUrl : "Loading..."}
+                            alt={data.length > 0 ? data[0].title : "Loading..."}
                         />
                     </div>
 
                     <div className="details-panel">
                         <span className="badge">vector</span>
-                        <h1>Orbit Gradient System</h1>
+                        <h1>{data.length > 0 ? data[0].title : "Loading..."}</h1>
                         <p>
-                            Editable mesh gradients, grain overlays, and poster-ready vector frames for launch campaigns.
-                            Includes SVG masters and export-ready PNGs.
+                            {data.length > 0 ? data[0].description : "Loading..."}  
                         </p>
 
                         <div className="details-stats">
-                            <span>Price: <strong>$18</strong></span>
-                            <span>Author: <strong>Mira Cole</strong></span>
-                            <span className="like-count">Likes: <strong id="likeValue">12</strong></span>
+                            <span>Price: <strong>{data.length > 0 ? `$${data[0].price}` : "Loading..."} </strong></span>
+                            <span>Author: <strong>{data.length > 0 ? data[0].author_id : "Loading..."} </strong></span>
+                            <span className="like-count">Likes: <strong id="likeValue">-</strong></span>
                         </div>
 
                         {/* <!-- Guest / other-user actions: show Like. Owner actions: Edit + Delete. --> */}
@@ -34,10 +49,6 @@ function Details() {
                             <Link className="btn btn-ghost" to="/edit">Edit</Link>
                             <button className="btn btn-danger" type="button">Delete</button>
                         </div>
-                        <p className="field-hint" style={{ marginTop: "1rem" }}>
-                            In React: show <strong>Like</strong> only for logged-in users who are not the owner.
-                            Show <strong>Edit/Delete</strong> only for the owner. Guests see neither action set.
-                        </p>
                     </div>
                 </div>
             </section>
