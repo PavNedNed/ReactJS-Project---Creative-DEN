@@ -10,7 +10,7 @@ const initialValues = {
     imageUrl: "",
     category: "",
     description: "",
-    price: 0,
+    price: 1,
 };
 
 function Edit() {
@@ -39,9 +39,10 @@ function Edit() {
     }, [data]);
 
     function changeHandler(event) {
+        const { name, value, type } = event.target;
         setValues((currentValues) => ({
             ...currentValues,
-            [event.target.name]: event.target.name ? (event.target.type === "number" ? Number(event.target.value) : event.target.value) : event.target.value,
+            [name]: type === "number" ? Number(value) : value,
         }));
     }
 

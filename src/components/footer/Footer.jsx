@@ -5,7 +5,7 @@ function Footer() {
         <footer className="site-footer">
             <div className="container footer-inner">
                 <Link className="brand" to="/">
-                    <img src="./logo_white.png" />
+                    <img src="/logo_white.png" />
                 </Link>
                 <p>ReactJS project by Pavel Nedelchev.</p>
             </div>
