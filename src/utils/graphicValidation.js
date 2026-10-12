@@ -1,25 +1,33 @@
 function graphicValidation(values) {
+    let errors = {};
+
     if (values.title.trim().length < 3) {
-        return "Title must be at least 3 characters long.";
+        errors['title'] = "Title must be at least 3 characters long";
+    }
+    if (!values.title.trim()) {
+        errors['title'] = "Title is required";
     }
 
     if (!values.imageUrl.trim()) {
-        return "Image URL is required.";
+        errors['imageUrl'] = "Image URL is required";
     }
 
     if (!values.category) {
-        return "Please select a category.";
+        errors['category'] = "Please select a category";
     }
 
     if (values.description.trim().length < 10) {
-        return "Description must be at least 10 characters long.";
+        errors['description'] = "Description must be at least 10 characters long";
+    }
+    if (!values.description.trim()) {
+        errors['description'] = "Description is required";
     }
 
     if (!Number.isFinite(values.price) || values.price < 1) {
-        return "Price must be at least 1 USD.";
+        errors['price'] = "Price must be at least 1 USD";
     }
 
-    return null;
+    return errors;
 }
 
 export default graphicValidation;

@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router";
 import ItemHeader from "../shared/ItemHeader";
 import { useState } from "react";
+import graphicValidation from "../../utils/graphicValidation";
+import styles from "../../utils/error-field.module.css";
 
 import useFetch from "../../hooks/useFetch";
 
@@ -14,6 +16,7 @@ const initialValues = {
 
 function Create() {
     const [values, setValues] = useState(initialValues);
+    const [errors, setErrors] = useState({});
     // console.log(values);
     const { request, loading, error } = useFetch("graphics");
     const navigate = useNavigate();
@@ -31,6 +34,16 @@ function Create() {
 
         // console.log("Submitting values:", values);
 
+        // validate the form values
+        const errors = graphicValidation(values);
+        setErrors(errors);
+
+        if(Object.keys(errors).length > 0) {
+            console.log("Validation Errors", errors);
+            return;
+        }
+
+        // send the request to create a new graphic
         const result = await request(
             "POST",
             values,
@@ -42,6 +55,10 @@ function Create() {
             navigate(`/catalog`);
         }
     }
+
+    const inputClass = (field) => {
+        return errors[field] ? styles['error-field'] : '';
+    };
 
     return (
         <main>
@@ -60,12 +77,13 @@ function Create() {
                     <div className="form-grid">
                         <div className="field">
                             <label htmlFor="title">Title</label>
-                            <input id="title" name="title" type="text" placeholder="e.g. Graphic design item" value={values.title} onChange={changeHandler} required />
+                            <input id="title" name="title" type="text" placeholder="e.g. Graphic design item" value={values.title} onChange={changeHandler} className={inputClass("title")}  />
                         </div>
+                        {errors.title && <div className={styles['error-message']}>{errors.title}</div>}
 
                         <div className="field">
                             <label htmlFor="category">Category</label>
-                            <select id="category" name="category" value={values.category} onChange={changeHandler} required>
+                            <select id="category" name="category" value={values.category} onChange={changeHandler} className={inputClass("category")} >
                                 <option value="" >Choose a category</option>
                                 <option value="vector">Vector</option>
                                 <option value="raster">Raster</option>
@@ -74,16 +92,19 @@ function Create() {
                                 <option value="caricature">Caricature</option>
                             </select>
                         </div>
+                        {errors.category && <div className={styles['error-message']}>{errors.category}</div>}
 
                         <div className="field">
                             <label htmlFor="imageUrl">Image URL</label>
-                            <input id="imageUrl" name="imageUrl" type="url" placeholder="https://..." value={values.imageUrl} onChange={changeHandler} required />
+                            <input id="imageUrl" name="imageUrl" type="url" placeholder="https://..." value={values.imageUrl} onChange={changeHandler} className={inputClass("imageUrl")}  />
                         </div>
+                        {errors.imageUrl && <div className={styles['error-message']}>{errors.imageUrl}</div>}
 
                         <div className="field">
                             <label htmlFor="price">Price (USD)</label>
-                            <input id="price" name="price" type="number" min="1" step="1" placeholder="18" value={values.price} onChange={changeHandler} required />
+                            <input id="price" name="price" type="number" min="1" step="1" placeholder="18" value={values.price} onChange={changeHandler} className={inputClass("price")}  />
                         </div>
+                        {errors.price && <div className={styles['error-message']}>{errors.price}</div>}
 
                         <div className="field">
                             <label htmlFor="description">Description</label>
@@ -91,10 +112,12 @@ function Create() {
                                 id="description"
                                 name="description"
                                 placeholder="What is inside the pack, file formats, and suggested use."
-                                value={values.description} onChange={changeHandler}
-                                required
+                                value={values.description} onChange={changeHandler} className={inputClass("description")}
+                                
                             ></textarea>
                         </div>
+                        {errors.description && <div className={styles['error-message']}>{errors.description}</div>}
+
                     </div>
 
                     <div className="form-actions">
