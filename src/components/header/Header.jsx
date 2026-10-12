@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 
 function Header() {
     const [isOpen, setIsOpen] = useState(false);
@@ -30,25 +30,59 @@ function Header() {
 
                 <ul className={`nav-links ${isOpen ? "is-open" : ""}`}>
                     <li>
-                        <Link to="/">Home</Link>
+                        
+                        <NavLink
+                            to="/"
+                            className={({ isActive }) =>
+                                isActive ? "nav-cta" : ""
+                            }
+                        >
+                            Home
+                        </NavLink>
                     </li>
 
                     <li>
-                        <Link to="/catalog">Catalog</Link>
+                        <NavLink
+                            to="/catalog"
+                            className={({ isActive }) =>
+                                isActive ? "nav-cta" : ""
+                            }
+                        >
+                            Catalog
+                        </NavLink>
                     </li>
 
                     <li>
-                        <Link to="/about">About</Link>
+                        <NavLink
+                            to="/about"
+                            className={({ isActive }) =>
+                                isActive ? "nav-cta" : ""
+                            }
+                        >
+                            About
+                        </NavLink>
                     </li>
 
                     <li>
-                        <Link to="/login">Login</Link>
+                        <NavLink
+                            to="/login"
+                            className={({ isActive }) =>
+                                isActive ? "nav-cta" : ""
+                            }
+                        >
+                            Login
+                        </NavLink>
                     </li>
 
                     <li>
-                        <Link className="nav-cta" to="/register">
+                        <NavLink
+                            to="/register"
+                            className={({ isActive }) =>
+                                isActive ? "nav-cta" : ""
+                            }
+                        >
                             Register
-                        </Link>
+                        </NavLink>
                     </li>
                 </ul>
 
