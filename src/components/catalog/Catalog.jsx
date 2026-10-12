@@ -1,20 +1,29 @@
 import AssetCard from "../shared/AssetCard";
 import SectionHead from "./SectionHead";
 import { Link } from "react-router";
+import { useState } from "react";
 
 import useFetch from "../../hooks/useFetch";
+import DropDownButton from "./DrobDownButton";
 
 function Catalog() {
-    const { data, loading, error } = useFetch(
-        "graphics",
-        "select=*&order=createdAt.desc");
+    const [category, setCategory] = useState("all");
 
+    const query = category === "all"
+        ? "select=*&order=createdAt.desc"
+        : `select=*&category=eq.${category}&order=createdAt.desc`;
+
+        // console.log("QUERY: " + query)
+
+    const { data, loading, error } = useFetch("graphics", query);
+
+    const handleCategoryChange = (event) => {
+        setCategory(event.target.value);
+    };
 
     if (error) {
         console.error(error);
     }
-
-    // console.log(data);
 
     return (
         <main>
@@ -27,7 +36,11 @@ function Catalog() {
             <section className="section" style={{ paddingTop: "1.5rem" }}>
                 <div className="container">
                     <div className="catalog-toolbar">
-                        <p className="muted">Showing all assets</p>
+
+                        <DropDownButton onChange={handleCategoryChange} />
+
+                        {/* <p className="muted">Showing all assets</p>                         */}
+
                         <Link className="btn btn-primary" to="/graphics/create">Create listing</Link>
                     </div>
 
