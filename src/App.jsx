@@ -3,6 +3,7 @@ import Edit from "./components/edit/Edit"
 import Catalog from "./components/catalog/Catalog"
 import Login from "./components/login/Login"
 import './App.css'
+import NotFound from './components/notFound/NotFound'
 import Header from './components/header/Header'
 import Footer from "./components/footer/Footer"
 import Home from './components/home/Home'
@@ -29,6 +30,8 @@ function App() {
         <Route path="/graphics/:graphicId/edit" element={<Edit />} />
 
         <Route path="/logout" element={<Logout />} />
+
+        <Route path='*' element={<NotFound />} />
       </Routes>
 
       <Footer />
