@@ -7,7 +7,7 @@ function Details() {
     const graphicId = useParams().graphicId;
 
     const { data, loading, error, request } = useFetch(
-        "graphics",
+        "rest/v1/graphics",
         `id=eq.${graphicId}`
     );
 

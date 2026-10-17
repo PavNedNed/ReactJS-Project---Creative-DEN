@@ -18,7 +18,7 @@ function Create() {
     const [values, setValues] = useState(initialValues);
     const [errors, setErrors] = useState({});
     // console.log(values);
-    const { request, loading, error } = useFetch("graphics");
+    const { request, loading, error } = useFetch("rest/v1/graphics");
     const navigate = useNavigate();
 
     function changeHandler(event) {

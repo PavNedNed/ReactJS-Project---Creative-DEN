@@ -7,7 +7,7 @@ import useFetch from "../../hooks/useFetch";
 function Home() {
     // const { data, loading, error } = useFetch("graphics", "id=eq.2b3bcb56-2047-4d94-9397-58611d5aadc0");
     const { data, loading, error } = useFetch(
-        "graphics",
+        "rest/v1/graphics",
         "select=*&order=createdAt.desc&limit=3");
 
     

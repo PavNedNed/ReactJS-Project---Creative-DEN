@@ -1,6 +1,8 @@
-import { Link } from "react-router";
+import { Link, useNavigate  } from "react-router";
 import ItemHeader from "../shared/ItemHeader";
 import { useState } from "react";
+
+import useFetch from "../../hooks/useFetch";
 
 import authValidation from "../../utils/authValidation";
 import styles from "../../utils/error-field.module.css";
@@ -8,6 +10,17 @@ import styles from "../../utils/error-field.module.css";
 // This one is an uncontrolled form
 function Register() {
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+
+  const { data, loading, error, request } = useFetch(
+      "auth/v1/signup",
+      "",
+      false,
+  );
+
+  if (error) {
+      console.error(error);
+  }
 
   async function submitHandler(event) {
         event.preventDefault();
@@ -26,12 +39,22 @@ function Register() {
             return;
         }
 
-        // send the request to create a new graphic
-        return console.log("Form submitted successfully", values);
-        
-        if (result) {
-            navigate(`/`);
+         // send the request to login
+        try {
+            const result = await request(
+                "POST",
+                values,
+            );
+
+            if (result) {
+                navigate(`/`);
+            }
         }
+        catch (error) {
+            console.log("Error:", error.message); // vij tuk
+        }        
+
+        console.log("Register values:", values);
     }
 
     const inputClass = (field) => {

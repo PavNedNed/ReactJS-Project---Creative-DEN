@@ -13,7 +13,25 @@ import Create from "./components/create/Create"
 import Details from "./components/details/Details"
 import About from "./components/about/About"
 
+import * as authApi from "./api/authApi";
+
 function App() {
+
+  const register = async (userData) => {
+        // // Authenticate with supabase auth
+        // try {
+        //     const result = await authApi.register(userData);
+        //     // console.log(result);
+
+        //     setAuth(result);
+
+        //     navigate("/");
+        // }
+        // catch (error) {
+        //     alert(error.message);
+        // }
+    };
+
   return (
     <>
       <Header />
@@ -23,7 +41,7 @@ function App() {
         <Route path="/catalog" element={<Catalog />} />
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/register" element={<Register onRegister={register} />} />
         
         <Route path="/graphics/:graphicId" element={<Details />} />
         <Route path="/graphics/create" element={<Create />} />

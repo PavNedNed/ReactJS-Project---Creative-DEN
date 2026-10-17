@@ -15,7 +15,7 @@ function Catalog() {
 
         // console.log("QUERY: " + query)
 
-    const { data, loading, error } = useFetch("graphics", query);
+    const { data, loading, error } = useFetch("rest/v1/graphics", query);
 
     const handleCategoryChange = (event) => {
         setCategory(event.target.value);

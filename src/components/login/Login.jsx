@@ -1,13 +1,29 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import ItemHeader from "../shared/ItemHeader";
 import { useState } from "react";
+
+import useFetch from "../../hooks/useFetch";
 
 import authValidation from "../../utils/authValidation";
 import styles from "../../utils/error-field.module.css";
 
 // This one is an uncontrolled form
-function Login() {
+function Login({
+    onLogin,
+    }
+) {
+    const navigate = useNavigate();
     const [errors, setErrors] = useState({});
+
+    const { data, loading, error, request } = useFetch(
+        "auth/v1/token",
+        "grant_type=password",
+        false,
+    );
+
+    if (error) {
+        console.error(error);
+    }
 
     async function submitHandler(event) {
         event.preventDefault();
@@ -26,12 +42,24 @@ function Login() {
             return;
         }
 
-        // send the request to create a new graphic
-        return console.log("Form submitted successfully");
-        
-        if (result) {
-            navigate(`/`);
+        // send the request to login
+        try {
+            const result = await request(
+                "POST",
+                values,
+            );
+
+            if (result) {
+                navigate(`/`);
+            }
         }
+        catch (error) {
+            console.log("Error:", error.message); // vij tuk
+        }        
+
+        console.log("Login values:", values);
+
+        
     }
 
     const inputClass = (field) => {

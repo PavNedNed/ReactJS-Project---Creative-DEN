@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export default function useFetch(table, query = "select=*") {
+export default function useFetch(table, query = "select=*", immediate = true) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -23,7 +23,7 @@ export default function useFetch(table, query = "select=*") {
 
         try {
             const response = await fetch(
-                `${SUPABASE_URL}/rest/v1/${table}?${requestQuery}`,
+                `${SUPABASE_URL}/${table}?${requestQuery}`,
                 {
                     method,
                     headers: {
@@ -63,7 +63,9 @@ export default function useFetch(table, query = "select=*") {
     }
 
     useEffect(() => {
-        request();
+        if (immediate) {
+            request();
+        }
 
         return () => {
             controllerRef.current?.abort();

@@ -25,7 +25,7 @@ function Edit() {
     const navigate = useNavigate();
 
     const { data, loading, error, request } = useFetch(
-        "graphics",
+        "rest/v1/graphics",
         `select=*&id=eq.${graphicId}`
     );
 
