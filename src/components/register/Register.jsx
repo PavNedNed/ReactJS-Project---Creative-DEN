@@ -7,10 +7,13 @@ import useFetch from "../../hooks/useFetch";
 import authValidation from "../../utils/authValidation";
 import styles from "../../utils/error-field.module.css";
 
+import { useUserContext } from '../../contexts/UserContext';
+
 // This one is an uncontrolled form
 function Register() {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const { registerHandler } = useUserContext();
 
   const { data, loading, error, request } = useFetch(
       "auth/v1/signup",
@@ -41,9 +44,9 @@ function Register() {
 
          // send the request to login
         try {
-            const result = await request(
-                "POST",
-                values,
+            const result = await registerHandler(
+                values.email,
+                values.password
             );
 
             if (result) {

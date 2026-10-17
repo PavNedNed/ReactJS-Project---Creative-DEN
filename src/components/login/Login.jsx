@@ -7,23 +7,13 @@ import useFetch from "../../hooks/useFetch";
 import authValidation from "../../utils/authValidation";
 import styles from "../../utils/error-field.module.css";
 
+import { useUserContext } from '../../contexts/UserContext';
+
 // This one is an uncontrolled form
-function Login({
-    onLogin,
-    }
-) {
+function Login() {
     const navigate = useNavigate();
     const [errors, setErrors] = useState({});
-
-    const { data, loading, error, request } = useFetch(
-        "auth/v1/token",
-        "grant_type=password",
-        false,
-    );
-
-    if (error) {
-        console.error(error);
-    }
+    const { loginHandler } = useUserContext();
 
     async function submitHandler(event) {
         event.preventDefault();
@@ -44,12 +34,12 @@ function Login({
 
         // send the request to login
         try {
-            const result = await request(
-                "POST",
-                values,
+            const result = await loginHandler(
+                values.email,
+                values.password
             );
 
-            if (result) {
+            if (result?.access_token) {
                 navigate(`/`);
             }
         }

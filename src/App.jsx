@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router"
+
 import Edit from "./components/edit/Edit"
 import Catalog from "./components/catalog/Catalog"
 import Login from "./components/login/Login"
@@ -13,46 +14,33 @@ import Create from "./components/create/Create"
 import Details from "./components/details/Details"
 import About from "./components/about/About"
 
-import * as authApi from "./api/authApi";
+import { UserProvider } from "./contexts/UserContext"
 
 function App() {
 
-  const register = async (userData) => {
-        // // Authenticate with supabase auth
-        // try {
-        //     const result = await authApi.register(userData);
-        //     // console.log(result);
-
-        //     setAuth(result);
-
-        //     navigate("/");
-        // }
-        // catch (error) {
-        //     alert(error.message);
-        // }
-    };
-
   return (
     <>
-      <Header />
+      <UserProvider>
+        <Header />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/catalog" element={<Catalog />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register onRegister={register} />} />
-        
-        <Route path="/graphics/:graphicId" element={<Details />} />
-        <Route path="/graphics/create" element={<Create />} />
-        <Route path="/graphics/:graphicId/edit" element={<Edit />} />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
-        <Route path="/logout" element={<Logout />} />
+          <Route path="/graphics/:graphicId" element={<Details />} />
+          <Route path="/graphics/create" element={<Create />} />
+          <Route path="/graphics/:graphicId/edit" element={<Edit />} />
 
-        <Route path='*' element={<NotFound />} />
-      </Routes>
+          <Route path="/logout" element={<Logout />} />
 
-      <Footer />
+          <Route path='*' element={<NotFound />} />
+        </Routes>
+
+        <Footer />
+      </UserProvider>
     </>
   )
 }
