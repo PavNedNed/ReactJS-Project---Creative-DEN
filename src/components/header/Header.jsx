@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router";
+import { useUserContext } from '../../contexts/UserContext';
 
 function Header() {
     const [isOpen, setIsOpen] = useState(false);
+    const { user } = useUserContext();
 
     const toggleHandler = () => {
         setIsOpen(isOpen => !isOpen);
@@ -30,60 +32,52 @@ function Header() {
 
                 <ul className={`nav-links ${isOpen ? "is-open" : ""}`}>
                     <li>
-                        
-                        <NavLink
-                            to="/"
-                            className={({ isActive }) =>
-                                isActive ? "nav-cta" : ""
-                            }
-                        >
+                        <NavLink to="/" end>
                             Home
                         </NavLink>
                     </li>
 
                     <li>
-                        <NavLink
-                            to="/catalog"
-                            className={({ isActive }) =>
-                                isActive ? "nav-cta" : ""
-                            }
-                        >
+                        <NavLink to="/catalog">
                             Catalog
                         </NavLink>
                     </li>
 
                     <li>
-                        <NavLink
-                            to="/about"
-                            className={({ isActive }) =>
-                                isActive ? "nav-cta" : ""
-                            }
-                        >
+                        <NavLink to="/about">
                             About
                         </NavLink>
                     </li>
 
-                    <li>
-                        <NavLink
-                            to="/login"
-                            className={({ isActive }) =>
-                                isActive ? "nav-cta" : ""
-                            }
-                        >
-                            Login
-                        </NavLink>
-                    </li>
+                    {user ? (
+                        <>
+                            <li>
+                                <NavLink to="/graphics/create">
+                                    Create
+                                </NavLink>
+                            </li>
 
-                    <li>
-                        <NavLink
-                            to="/register"
-                            className={({ isActive }) =>
-                                isActive ? "nav-cta" : ""
-                            }
-                        >
-                            Register
-                        </NavLink>
-                    </li>
+                            <li>
+                                <NavLink to="/logout">
+                                    Logout
+                                </NavLink>
+                            </li>
+                        </>
+                    ) : (
+                        <>
+                            <li>
+                                <NavLink to="/login">
+                                    Login
+                                </NavLink>
+                            </li>
+
+                            <li>
+                                <NavLink to="/register">
+                                    Register
+                                </NavLink>
+                            </li>
+                        </>
+                    )}
                 </ul>
 
             </div>
