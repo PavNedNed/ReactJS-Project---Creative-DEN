@@ -120,7 +120,7 @@ function Details() {
         }
     };
 
-    const deleteGameClickHandler = async (e) => {
+    const deleteGraphicClickHandler = async (e) => {
         e.preventDefault();
 
         const confirmed = confirm(
@@ -198,7 +198,7 @@ function Details() {
                         </div>
 
                         <div className="btn-group">
-                            {!isOwner && (
+                            {!isOwner && user?.user?.id && (
                                 <button
                                     className="btn btn-like"
                                     type="button"
@@ -226,7 +226,7 @@ function Details() {
                                     <button
                                         className="btn btn-danger"
                                         type="button"
-                                        onClick={deleteGameClickHandler}
+                                        onClick={deleteGraphicClickHandler}
                                     >
                                         Delete
                                     </button>
