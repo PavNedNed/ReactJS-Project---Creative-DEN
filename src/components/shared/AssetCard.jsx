@@ -18,7 +18,7 @@ function AssetCard({
                     <span>0 likes</span>
                 </div>
                 <h3 className="asset-title"><Link to={`/graphics/${graphic.id}`}>{graphic.title}</Link></h3>
-                <p className="asset-author">by {graphic.author_id}</p>
+                <p className="asset-author">by {graphic.author_name}</p>
                 <div className="asset-footer">
                     <span className="price">${graphic.price}</span>
                     <Link className="btn btn-ghost" to={`/graphics/${graphic.id}`}>Details</Link>

@@ -60,7 +60,7 @@ function Details() {
 
                         <div className="details-stats">
                             <span>Price: <strong>{data.length > 0 ? `$${data[0].price}` : "Loading..."} </strong></span>
-                            <span>Author: <strong>{data.length > 0 ? data[0].author_id : "Loading..."} </strong></span>
+                            <span>Author: <strong>{data.length > 0 ? data[0].author_name : "Loading..."} </strong></span>
                             <span className="like-count">Likes: <strong id="likeValue">-</strong></span>
                         </div>
 

@@ -1,10 +1,14 @@
 
 import { useEffect, useRef, useState } from "react";
+import { useUserContext } from '../contexts/UserContext';
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export default function useFetch(table, query = "select=*", immediate = true) {
+    const { user } = useUserContext();
+    const accessToken = user?.accessToken;
+
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -28,7 +32,7 @@ export default function useFetch(table, query = "select=*", immediate = true) {
                     method,
                     headers: {
                         apikey: SUPABASE_KEY,
-                        Authorization: `Bearer ${SUPABASE_KEY}`,
+                        Authorization: `Bearer ${accessToken || SUPABASE_KEY}`,
                         "Content-Type": "application/json",
                         Prefer: "return=representation",
                     },

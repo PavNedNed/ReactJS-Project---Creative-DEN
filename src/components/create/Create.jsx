@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router";
 import ItemHeader from "../shared/ItemHeader";
 import { useState } from "react";
+import { useUserContext } from "../../contexts/UserContext";
 import graphicValidation from "../../utils/graphicValidation";
 import styles from "../../utils/error-field.module.css";
 
@@ -15,6 +16,10 @@ const initialValues = {
 };
 
 function Create() {
+    const { user } = useUserContext();
+    const authorEmail = (user.user.email);
+    // console.log("User from context:", user.email);
+
     const [values, setValues] = useState(initialValues);
     const [errors, setErrors] = useState({});
     // console.log(values);
@@ -25,6 +30,7 @@ function Create() {
         const { name, value, type } = event.target;
         setValues((currentValues) => ({
             ...currentValues,
+            author_name: authorEmail || "",
             [name]: type === "number" ? Number(value) : value,
         }));
     }
