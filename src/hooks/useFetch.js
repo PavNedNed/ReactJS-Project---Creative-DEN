@@ -9,6 +9,8 @@ export default function useFetch(table, query = "select=*", immediate = true) {
     const { user } = useUserContext();
     const accessToken = user?.accessToken;
 
+    // console.log("User from context:", user);
+
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);

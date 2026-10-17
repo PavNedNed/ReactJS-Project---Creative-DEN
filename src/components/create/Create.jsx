@@ -17,7 +17,7 @@ const initialValues = {
 
 function Create() {
     const { user } = useUserContext();
-    const authorEmail = (user.user.email);
+    const authorEmail = (user?.user?.email);
     // console.log("User from context:", user.email);
 
     const [values, setValues] = useState(initialValues);
