@@ -45,11 +45,7 @@ function Login() {
         }
         catch (error) {
             console.log("Error:", error.message); // vij tuk
-        }        
-
-        console.log("Login values:", values);
-
-        
+        }       
     }
 
     const inputClass = (field) => {

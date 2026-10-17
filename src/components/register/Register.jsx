@@ -57,7 +57,7 @@ function Register() {
             console.log("Error:", error.message); // vij tuk
         }        
 
-        console.log("Register values:", values);
+        // console.log("Register values:", values);
     }
 
     const inputClass = (field) => {

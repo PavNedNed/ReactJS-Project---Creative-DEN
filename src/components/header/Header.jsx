@@ -32,19 +32,34 @@ function Header() {
 
                 <ul className={`nav-links ${isOpen ? "is-open" : ""}`}>
                     <li>
-                        <NavLink to="/" end>
+                        <NavLink
+                            to="/"
+                            className={({ isActive }) =>
+                                isActive ? "nav-cta" : ""
+                            }
+                        >
                             Home
                         </NavLink>
                     </li>
 
                     <li>
-                        <NavLink to="/catalog">
+                        <NavLink
+                            to="/catalog"
+                            className={({ isActive }) =>
+                                isActive ? "nav-cta" : ""
+                            }
+                        >
                             Catalog
                         </NavLink>
                     </li>
 
                     <li>
-                        <NavLink to="/about">
+                        <NavLink
+                            to="/about"
+                            className={({ isActive }) =>
+                                isActive ? "nav-cta" : ""
+                            }
+                        >
                             About
                         </NavLink>
                     </li>
@@ -52,27 +67,52 @@ function Header() {
                     {user ? (
                         <>
                             <li>
-                                <NavLink to="/graphics/create">
+                                <NavLink
+                                    to="/graphics/create"
+                                    className={({ isActive }) =>
+                                        isActive ? "nav-cta" : ""
+                                    }
+                                >
                                     Create
                                 </NavLink>
                             </li>
 
                             <li>
-                                <NavLink to="/logout">
+                                <NavLink
+                                    to="/logout"
+                                    className={({ isActive }) =>
+                                        isActive ? "nav-cta" : ""
+                                    }
+                                >
                                     Logout
                                 </NavLink>
+                            </li>
+                            <li>
+                                <p>
+                                    {user.user.email}
+                                </p>
                             </li>
                         </>
                     ) : (
                         <>
                             <li>
-                                <NavLink to="/login">
+                                <NavLink
+                                    to="/login"
+                                    className={({ isActive }) =>
+                                        isActive ? "nav-cta" : ""
+                                    }
+                                >
                                     Login
                                 </NavLink>
                             </li>
 
                             <li>
-                                <NavLink to="/register">
+                                <NavLink
+                                    to="/register"
+                                    className={({ isActive }) =>
+                                        isActive ? "nav-cta" : ""
+                                    }
+                                >
                                     Register
                                 </NavLink>
                             </li>
