@@ -2,11 +2,14 @@ import AssetCard from "../shared/AssetCard";
 import SectionHead from "./SectionHead";
 import { Link } from "react-router";
 import { useState } from "react";
+import { useUserContext } from "../../contexts/UserContext";    
 
 import useFetch from "../../hooks/useFetch";
 import DropDownButton from "./DrobDownButton";
 
 function Catalog() {
+    const { user } = useUserContext();
+    
     const [category, setCategory] = useState("all");
 
     const query = category === "all"
@@ -41,7 +44,9 @@ function Catalog() {
 
                         {/* <p className="muted">Showing all assets</p>                         */}
 
-                        <Link className="btn btn-primary" to="/graphics/create">Create listing</Link>
+                        {user && (
+                            <Link className="btn btn-primary" to="/graphics/create">Create listing</Link>
+                        )}
                     </div>
 
                     <div className="asset-grid">
