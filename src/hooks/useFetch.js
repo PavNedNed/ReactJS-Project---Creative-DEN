@@ -1,13 +1,15 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useUserContext } from '../contexts/UserContext';
+import { useNavigate } from 'react-router';
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export default function useFetch(table, query = "select=*", immediate = true) {
-    const { user } = useUserContext();
-    
+    const { user, locallyLogout } = useUserContext();
+    const navigate = useNavigate();
+
 
     // console.log("Access token:", accessToken);
 
@@ -32,8 +34,8 @@ export default function useFetch(table, query = "select=*", immediate = true) {
         setLoading(true);
         setError(null);
 
-        const requestUrl = requestQuery 
-            ? `${SUPABASE_URL}/${table}?${requestQuery}` 
+        const requestUrl = requestQuery
+            ? `${SUPABASE_URL}/${table}?${requestQuery}`
             : `${SUPABASE_URL}/${table}`;
 
         // console.log("Request URL:", requestUrl);
@@ -71,6 +73,15 @@ export default function useFetch(table, query = "select=*", immediate = true) {
         } catch (err) {
             if (err.name !== "AbortError") {
                 setError(err.message);
+            }
+
+            if (err.message.includes("JWT expired")) {
+                console.log("JWT expired");
+
+                locallyLogout();
+                navigate("/login", { replace: true });
+
+                return null;
             }
 
             return null;

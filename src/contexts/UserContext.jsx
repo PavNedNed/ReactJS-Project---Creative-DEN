@@ -7,6 +7,7 @@ export const UserContext = createContext({
     loginHandler: async () => { },
     registerHandler: async () => { },
     logoutHandler: async () => { },
+    locallyLogout() {},
 });
 
 export function UserProvider({ children }) {
@@ -100,6 +101,10 @@ export function UserProvider({ children }) {
         }
     };
 
+    const locallyLogout = () => {
+        setUser(null);
+    };
+
     return (
         <UserContext.Provider
             value={{
@@ -107,6 +112,7 @@ export function UserProvider({ children }) {
                 loginHandler,
                 registerHandler,
                 logoutHandler,
+                locallyLogout,
             }}
         >
             {children}
