@@ -4,9 +4,9 @@ import useFetch from '../hooks/useFetch.js';
 
 export const UserContext = createContext({
     user: null,
-    loginHandler: async () => {},
-    registerHandler: async () => {},
-    logoutHandler() {},
+    loginHandler: async () => { },
+    registerHandler: async () => { },
+    logoutHandler: async () => { },
 });
 
 export function UserProvider({ children }) {
@@ -24,6 +24,12 @@ export function UserProvider({ children }) {
         false,
     );
 
+    // const { request: logoutRequest } = useFetch(
+    //     'auth/v1/logout',
+    //     '',
+    //     false,
+    // );
+
     const loginHandler = async (email, password) => {
         const result = await loginRequest('POST', {
             email,
@@ -37,6 +43,8 @@ export function UserProvider({ children }) {
                 refreshToken: result.refresh_token,
             });
         }
+
+        // console.log(localStorage.getItem('auth'))
 
         return result;
     };
@@ -60,8 +68,36 @@ export function UserProvider({ children }) {
         return result;
     };
 
-    const logoutHandler = () => {
-        setUser(null);
+    // Handles user logout by clearing the session both locally and on Supabase.
+    // Tuk trqbwa, poneje logout trqbwa da izprashta request kum Supabase s access token-a, predi da izchistim local state.
+    const logoutHandler = async () => {
+        // 1. Grab the token right away while it's still there
+        const currentAccessToken = user?.accessToken;
+
+        // console.log('Session before logout:', !!currentAccessToken);
+
+        if (!currentAccessToken) {
+            // console.error('No access token available');
+            setUser(null);
+            return;
+        }
+
+        try {
+            // 2. Perform a direct fetch to Supabase auth logout
+            await fetch(`${import.meta.env.VITE_SUPABASE_URL}/auth/v1/logout`, {
+                method: 'POST',
+                headers: {
+                    apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+                    Authorization: `Bearer ${currentAccessToken}`,
+                    "Content-Type": "application/json",
+                },
+            });
+        } catch (error) {
+            // console.error('Logout request failed:', error);
+        } finally {
+            // 3. Always clear local user state regardless of network outcome
+            setUser(null);
+        }
     };
 
     return (

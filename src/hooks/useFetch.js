@@ -7,7 +7,9 @@ const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export default function useFetch(table, query = "select=*", immediate = true) {
     const { user } = useUserContext();
-    const accessToken = user?.accessToken;
+    
+
+    // console.log("Access token:", accessToken);
 
     // console.log("User from context:", user);
 
@@ -18,6 +20,9 @@ export default function useFetch(table, query = "select=*", immediate = true) {
     const controllerRef = useRef(null);
 
     async function request(method = "GET", body = null, requestQuery = query) {
+        const accessToken = user?.accessToken; // promenih tuk
+        //console.log("Access token:", accessToken);
+
         // Cancel the previous request
         controllerRef.current?.abort();
 
@@ -27,9 +32,17 @@ export default function useFetch(table, query = "select=*", immediate = true) {
         setLoading(true);
         setError(null);
 
+        const requestUrl = requestQuery 
+            ? `${SUPABASE_URL}/${table}?${requestQuery}` 
+            : `${SUPABASE_URL}/${table}`;
+
+        // console.log("Request URL:", requestUrl);
+
         try {
+            //console.log("Has access token:", Boolean(accessToken));
+
             const response = await fetch(
-                `${SUPABASE_URL}/${table}?${requestQuery}`,
+                requestUrl,
                 {
                     method,
                     headers: {
