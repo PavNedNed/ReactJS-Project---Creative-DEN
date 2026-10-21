@@ -1,4 +1,5 @@
-import { Link, useParams, useNavigate } from "react-router";
+import { Link, useParams, useNavigate, Navigate } from "react-router";
+import { useUserContext } from "../../contexts/UserContext";
 import { useState, useEffect } from "react";
 
 import graphicValidation from "../../utils/graphicValidation";
@@ -19,6 +20,7 @@ const initialValues = {
 function Edit() {
     const [values, setValues] = useState(initialValues);
     const [errors, setErrors] = useState({});
+    const { user } = useUserContext();
     // console.log(values);
 
     const { graphicId } = useParams();
@@ -28,6 +30,8 @@ function Edit() {
         "rest/v1/graphics",
         `select=*&id=eq.${graphicId}`
     );
+
+
 
 
 
@@ -82,6 +86,10 @@ function Edit() {
     const inputClass = (field) => {
         return errors[field] ? styles['error-field'] : '';
     };
+
+    if (data.length > 0 && user?.user?.id !== data[0].user_id) {
+        return <Navigate to={`/graphics/${graphicId}`} replace />;
+    }
 
     return (
         <main>
