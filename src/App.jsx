@@ -1,4 +1,6 @@
 import { Route, Routes } from "react-router"
+import AuthGuard from "./components/guards/AuthGuard"
+import GuestGuard from "./components/guards/GuestGuard"
 
 import Edit from "./components/edit/Edit"
 import Catalog from "./components/catalog/Catalog"
@@ -18,31 +20,38 @@ import { UserProvider } from "./contexts/UserContext"
 
 function App() {
 
-  return (
-    <>
-      <UserProvider>
-        <Header />
+    return (
+        <>
+            <UserProvider>
+                <Header />
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/catalog" element={<Catalog />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+                <Routes>
+                    {/* Public */}
+                    <Route path="/" element={<Home />} />
+                    <Route path="/catalog" element={<Catalog />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/graphics/:graphicId" element={<Details />} />
 
-          <Route path="/graphics/:graphicId" element={<Details />} />
-          <Route path="/graphics/create" element={<Create />} />
-          <Route path="/graphics/:graphicId/edit" element={<Edit />} />
+                    {/* Guests only */}
+                    <Route element={<GuestGuard />}>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                    </Route>
 
-          <Route path="/logout" element={<Logout />} />
+                    {/* Logged-in only */}
+                    <Route element={<AuthGuard />}>
+                        <Route path="/graphics/create" element={<Create />} />
+                        <Route path="/graphics/:graphicId/edit" element={<Edit />} />
+                        <Route path="/logout" element={<Logout />} />
+                    </Route>
 
-          <Route path='*' element={<NotFound />} />
-        </Routes>
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
 
-        <Footer />
-      </UserProvider>
-    </>
-  )
+                <Footer />
+            </UserProvider>
+        </>
+    )
 }
 
 export default App
