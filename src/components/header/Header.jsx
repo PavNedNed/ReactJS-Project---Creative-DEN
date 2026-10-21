@@ -89,7 +89,7 @@ function Header() {
                             </li>
                             <li>
                                 <p>
-                                    {user.user.email}
+                                    {user?.user?.email}
                                 </p>
                             </li>
                         </>
