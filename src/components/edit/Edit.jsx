@@ -20,9 +20,9 @@ const initialValues = {
 function Edit() {
     const [values, setValues] = useState(initialValues);
     const [errors, setErrors] = useState({});
-    const { user } = useUserContext();
-    // console.log(values);
+    const [isSaving, setIsSaving] = useState(false);
 
+    const { user } = useUserContext();
     const { graphicId } = useParams();
     const navigate = useNavigate();
 
@@ -30,10 +30,6 @@ function Edit() {
         "rest/v1/graphics",
         `select=*&id=eq.${graphicId}`
     );
-
-
-
-
 
     // Populate the controlled form after fetching
     useEffect(() => {
@@ -43,13 +39,14 @@ function Edit() {
                 imageUrl: data[0].imageUrl ?? "",
                 category: data[0].category ?? "",
                 description: data[0].description ?? "",
-                price: data[0].price ?? "",
+                price: data[0].price ?? 1,
             });
         }
     }, [data]);
 
     function changeHandler(event) {
         const { name, value, type } = event.target;
+
         setValues((currentValues) => ({
             ...currentValues,
             [name]: type === "number" ? Number(value) : value,
@@ -57,43 +54,55 @@ function Edit() {
     }
 
     async function submitHandler(event) {
-        // console.log("Submitting values:", values);
-
         event.preventDefault();
 
-        // validate the form values
-        const errors = graphicValidation(values);
-        setErrors(errors);
+        const validationErrors = graphicValidation(values);
+        setErrors(validationErrors);
 
-        if (Object.keys(errors).length > 0) {
-            // console.log("Validation Errors", errors);
+        if (Object.keys(validationErrors).length > 0) {
             return;
         }
 
-        const result = await request(
-            "PATCH",
-            values,
-            `id=eq.${graphicId}`
-        );
+        setIsSaving(true);
 
-        // console.log("OPA!", result);
+        try {
+            const result = await request(
+                "PATCH",
+                values,
+                `id=eq.${graphicId}`
+            );
 
-        if (result) {
-            navigate(`/graphics/${graphicId}`);
+            if (result) {
+                navigate(`/graphics/${graphicId}`);
+            }
+        } finally {
+            setIsSaving(false);
         }
     }
 
     const inputClass = (field) => {
-        return errors[field] ? styles['error-field'] : '';
+        return errors[field] ? styles["error-field"] : "";
     };
 
-    if (data.length > 0 && user?.user?.id !== data[0].user_id) {
+    // Initial load only (not during PATCH save)
+    if (loading && data.length === 0) {
+        return <p>Loading graphic...</p>;
+    }
+
+    if (error && data.length === 0) {
+        return <p>Error loading graphic: {error}</p>;
+    }
+
+    if (!data || data.length === 0) {
+        return <p>Graphic not found.</p>;
+    }
+
+    if (user?.user?.id !== data[0].user_id) {
         return <Navigate to={`/graphics/${graphicId}`} replace />;
     }
 
     return (
         <main>
-
             <ItemHeader
                 title="Update listing"
                 type="Edit listing"
@@ -103,27 +112,59 @@ function Edit() {
             <section className="container">
                 <form className="form-shell wide" onSubmit={submitHandler}>
                     <h2 className="form-title">Edit pack</h2>
-                    <p className="form-sub">Edit the details of your listing below.</p>
+                    <p className="form-sub">
+                        Edit the details of your listing below.
+                    </p>
+
+                    {error && (
+                        <p className={styles["error-message"]}>
+                            Could not save: {error}
+                        </p>
+                    )}
 
                     <div className="form-grid">
                         <div className="field">
                             <label htmlFor="title">Title</label>
-                            <input id="title" name="title" type="text" value={values.title} onChange={changeHandler} className={inputClass("title")} />
+                            <input
+                                id="title"
+                                name="title"
+                                type="text"
+                                value={values.title}
+                                onChange={changeHandler}
+                                className={inputClass("title")}
+                            />
                         </div>
-                        {errors.title && <div className={styles['error-message']}>{errors.title}</div>}
+                        {errors.title && (
+                            <div className={styles["error-message"]}>
+                                {errors.title}
+                            </div>
+                        )}
 
                         <div className="field">
                             <label htmlFor="category">Category</label>
-                            <select id="category" name="category" value={values.category} onChange={changeHandler} className={inputClass("category")}>
-                                <option value="vector" >Vector</option>
-                                <option value="raster" >Raster</option>
-                                <option value="logo" >Logo</option>
-                                <option value="web" >Web</option>
-                                <option value="caricature" >Caricature</option>
+                            <select
+                                id="category"
+                                name="category"
+                                value={values.category}
+                                onChange={changeHandler}
+                                className={inputClass("category")}
+                            >
+                                <option value="vector">Vector</option>
+                                <option value="raster">Raster</option>
+                                <option value="logo">Logo</option>
+                                <option value="web">Web</option>
+                                <option value="caricature">Caricature</option>
                             </select>
-                            <p className="field-hint">Dropdown options: vector, raster, logo, web, caricature.</p>
+                            <p className="field-hint">
+                                Dropdown options: vector, raster, logo, web,
+                                caricature.
+                            </p>
                         </div>
-                        {errors.category && <div className={styles['error-message']}>{errors.category}</div>}
+                        {errors.category && (
+                            <div className={styles["error-message"]}>
+                                {errors.category}
+                            </div>
+                        )}
 
                         <div className="field">
                             <label htmlFor="imageUrl">Image URL</label>
@@ -131,30 +172,69 @@ function Edit() {
                                 id="imageUrl"
                                 name="imageUrl"
                                 type="url"
-                                value={values.imageUrl} onChange={changeHandler} className={inputClass("imageUrl")}
+                                value={values.imageUrl}
+                                onChange={changeHandler}
+                                className={inputClass("imageUrl")}
                                 placeholder="Image URL"
-                            
                             />
                         </div>
-                        {errors.imageUrl && <div className={styles['error-message']}>{errors.imageUrl}</div>}
+                        {errors.imageUrl && (
+                            <div className={styles["error-message"]}>
+                                {errors.imageUrl}
+                            </div>
+                        )}
 
                         <div className="field">
                             <label htmlFor="price">Price (USD)</label>
-                            <input id="price" name="price" type="number" min="1" step="1" value={values.price} onChange={changeHandler} className={inputClass("price")} />
+                            <input
+                                id="price"
+                                name="price"
+                                type="number"
+                                min="1"
+                                step="1"
+                                value={values.price}
+                                onChange={changeHandler}
+                                className={inputClass("price")}
+                            />
                         </div>
-                        {errors.price && <div className={styles['error-message']}>{errors.price}</div>}
+                        {errors.price && (
+                            <div className={styles["error-message"]}>
+                                {errors.price}
+                            </div>
+                        )}
 
                         <div className="field">
                             <label htmlFor="description">Description</label>
-                            <textarea id="description" name="description" value={values.description} onChange={changeHandler} className={inputClass("description")}>
-                            </textarea>
+                            <textarea
+                                id="description"
+                                name="description"
+                                value={values.description}
+                                onChange={changeHandler}
+                                className={inputClass("description")}
+                            />
                         </div>
-                        {errors.description && <div className={styles['error-message']}>{errors.description}</div>}
+                        {errors.description && (
+                            <div className={styles["error-message"]}>
+                                {errors.description}
+                            </div>
+                        )}
                     </div>
 
                     <div className="form-actions">
-                        <button className="btn btn-primary" type="submit">Save changes</button>
-                        <Link className="btn btn-ghost" to={`/graphics/${graphicId}`}>Cancel</Link>
+                        <button
+                            className="btn btn-primary"
+                            type="submit"
+                            disabled={isSaving}
+                        >
+                            {isSaving ? "Saving..." : "Save changes"}
+                        </button>
+
+                        <Link
+                            className="btn btn-ghost"
+                            to={`/graphics/${graphicId}`}
+                        >
+                            Cancel
+                        </Link>
                     </div>
                 </form>
             </section>
