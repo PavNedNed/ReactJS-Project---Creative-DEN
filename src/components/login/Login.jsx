@@ -9,6 +9,8 @@ import styles from "../../utils/error-field.module.css";
 
 import { useUserContext } from '../../contexts/UserContext';
 
+import { toast } from "react-toastify";
+
 // This one is an uncontrolled form
 function Login() {
     const navigate = useNavigate();
@@ -22,7 +24,7 @@ function Login() {
         const formData = new FormData(event.currentTarget);
         const values = Object.fromEntries(formData);
         //console.log("Submitting values:", values);
-    
+
         // validate the form values
         const errors = authValidation(values, false);
         setErrors(errors);
@@ -44,8 +46,8 @@ function Login() {
             }
         }
         catch (error) {
-            console.log("Error:", error.message); // vij tuk
-        }       
+            toast.error(error.message || "Login failed. Please try again.");
+        }
     }
 
     const inputClass = (field) => {
@@ -76,7 +78,7 @@ function Login() {
                         <div className="field">
                             <label htmlFor="password">Password</label>
                             <input id="password" name="password" type="password" placeholder="Your password" className={inputClass("password")} />
-                        </div>                        
+                        </div>
                         {errors.password && <div className={styles['error-message']}>{errors.password}</div>}
                     </div>
 

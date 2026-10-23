@@ -19,6 +19,7 @@ import About from "./components/about/About"
 import { UserProvider } from "./contexts/UserContext"
 
 import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
 
