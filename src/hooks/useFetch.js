@@ -3,13 +3,14 @@ import { useEffect, useRef, useState } from "react";
 import { useUserContext } from '../contexts/UserContext';
 import { useNavigate } from 'react-router';
 
+import { toast } from 'react-toastify'; 
+
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export default function useFetch(table, query = "select=*", immediate = true) {
     const { user, locallyLogout } = useUserContext();
     const navigate = useNavigate();
-
 
     // console.log("Access token:", accessToken);
 
@@ -82,6 +83,22 @@ export default function useFetch(table, query = "select=*", immediate = true) {
                 navigate("/login", { replace: true });
 
                 return null;
+            }
+
+            const extractedError = JSON.parse(err.message.replace("Error: ", "")).msg;
+
+            if (extractedError) {
+                if(extractedError == "Invalid login credentials") {
+                    toast.error("Invalid login credentials");
+
+                    setError("Invalid login credentials");
+                } else if (extractedError == "User already registered") {
+                    toast.error("User already registered");
+                    setError("User already registered");
+                } else {
+                    toast.error(extractedError);
+                    setError(extractedError);
+                }
             }
 
             return null;

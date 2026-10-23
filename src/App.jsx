@@ -18,6 +18,8 @@ import About from "./components/about/About"
 
 import { UserProvider } from "./contexts/UserContext"
 
+import { ToastContainer } from "react-toastify"
+
 function App() {
 
     return (
@@ -47,6 +49,8 @@ function App() {
 
                     <Route path="*" element={<NotFound />} />
                 </Routes>
+
+                <ToastContainer />
 
                 <Footer />
             </UserProvider>
