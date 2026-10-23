@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useUserContext } from '../contexts/UserContext';
 import { useNavigate } from 'react-router';
 
-import { toast } from 'react-toastify'; 
+import { toast } from 'react-toastify';
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -72,35 +72,36 @@ export default function useFetch(table, query = "select=*", immediate = true) {
 
             return result;
         } catch (err) {
-            if (err.name !== "AbortError") {
-                setError(err.message);
-            }
-
-            if (err.message.includes("JWT expired")) {
-                console.log("JWT expired");
-
-                locallyLogout();
-                navigate("/login", { replace: true });
-
+            
+            if (err.name === "AbortError") {
                 return null;
             }
+            const raw = err.message ?? "Request failed";
 
-            const extractedError = JSON.parse(err.message.replace("Error: ", "")).msg;
-
-            if (extractedError) {
-                if(extractedError == "Invalid login credentials") {
-                    toast.error("Invalid login credentials");
-
-                    setError("Invalid login credentials");
-                } else if (extractedError == "User already registered") {
-                    toast.error("User already registered");
-                    setError("User already registered");
-                } else {
-                    toast.error(extractedError);
-                    setError(extractedError);
-                }
+            if (raw.includes("JWT expired")) {
+                locallyLogout();
+                navigate("/login", { replace: true });
+                return null;
             }
-
+            
+            let extractedError = null;
+            try {
+                const parsed = JSON.parse(raw.replace(/^Error:\s*/, ""));
+                extractedError = parsed?.msg || parsed?.message || parsed?.error_description || null;
+            } catch {
+                extractedError = null;
+            }
+            const displayError = extractedError || raw;
+            if (displayError === "Invalid login credentials") {
+                toast.error("Invalid login credentials");
+                setError("Invalid login credentials");
+            } else if (displayError === "User already registered") {
+                toast.error("User already registered");
+                setError("User already registered");
+            } else {
+                toast.error(displayError);
+                setError(displayError);
+            }
             return null;
         } finally {
             if (!controller.signal.aborted) {

@@ -2,6 +2,8 @@ import { createContext, useContext } from 'react';
 import usePersistedState from '../components/use-local-storage/usePersistedState.js';
 import useFetch from '../hooks/useFetch.js';
 
+import { toast } from 'react-toastify';
+
 export const UserContext = createContext({
     user: null,
     loginHandler: async () => { },
@@ -84,8 +86,7 @@ export function UserProvider({ children }) {
         }
 
         try {
-            // 2. Perform a direct fetch to Supabase auth logout
-            await fetch(`${import.meta.env.VITE_SUPABASE_URL}/auth/v1/logout`, {
+            const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/auth/v1/logout`, {
                 method: 'POST',
                 headers: {
                     apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
@@ -93,10 +94,13 @@ export function UserProvider({ children }) {
                     "Content-Type": "application/json",
                 },
             });
+
+            if (!response.ok) {
+                toast.error("Server logout failed, but you were signed out locally.");
+            }
         } catch (error) {
-            // console.error('Logout request failed:', error);
+            toast.error("Could not reach the server. You were signed out locally.");
         } finally {
-            // 3. Always clear local user state regardless of network outcome
             setUser(null);
         }
     };
