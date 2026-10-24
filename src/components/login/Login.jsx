@@ -66,7 +66,7 @@ function Login() {
             <section className="container">
                 <form className="form-shell" onSubmit={submitHandler}>
                     <h2 className="form-title">Sign in</h2>
-                    <p className="form-sub">Use the email and password from your Hatchyard registration.</p>
+                    <p className="form-sub">Use the email and password from your Creative DEN registration.</p>
 
                     <div className="form-grid">
                         <div className="field">
